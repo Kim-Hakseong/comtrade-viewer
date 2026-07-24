@@ -1,0 +1,241 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Ncv.App.ViewModels"
+        xmlns:controls="using:Ncv.App.Controls"
+        x:Class="Ncv.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        x:CompileBindings="False"
+        Title="Nexys COMTRADE Viewer"
+        Icon="/Assets/app.ico"
+        Width="1280" Height="760"
+        MinWidth="980" MinHeight="600"
+        DragDrop.AllowDrop="True">
+  <DockPanel Margin="16">
+
+    <!-- 상단 바 카드 -->
+    <Border DockPanel.Dock="Top" Classes="card" Padding="10,8" Margin="0,0,0,12">
+      <DockPanel>
+        <Border DockPanel.Dock="Left" Classes="pill" VerticalAlignment="Center" Background="{StaticResource CardBrush}">
+          <StackPanel Orientation="Horizontal" Spacing="7">
+            <PathIcon Data="{StaticResource IconChart}" Width="15" Height="15"
+                      Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center" />
+            <TextBlock Text="Nexys COMTRADE Viewer" FontWeight="SemiBold" FontSize="14" VerticalAlignment="Center" />
+          </StackPanel>
+        </Border>
+        <ProgressBar DockPanel.Dock="Right" Width="120" Height="6" Margin="12,0,6,0" VerticalAlignment="Center"
+                     Minimum="0" Maximum="1" Value="{Binding LoadProgress}"
+                     IsVisible="{Binding IsLoading}" Foreground="{StaticResource AccentBrush}" />
+        <WrapPanel x:Name="ToolbarPanel" Margin="12,0,0,0" VerticalAlignment="Center">
+          <Button Click="OnOpenClick" Classes="accent" Margin="0,3,6,3">
+            <StackPanel Orientation="Horizontal" Spacing="7">
+              <PathIcon Data="{StaticResource IconFolder}" />
+              <TextBlock Text="열기" VerticalAlignment="Center" />
+            </StackPanel>
+          </Button>
+          <Button Margin="0,3,6,3" IsEnabled="{Binding HasRecentFiles}" ToolTip.Tip="최근 파일 (최대 10개)">
+            <Button.Flyout>
+              <Flyout Placement="BottomEdgeAlignedLeft">
+                <ItemsControl ItemsSource="{Binding RecentFiles}" MaxWidth="480">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Button Command="{Binding $parent[Window].DataContext.OpenRecentCommand}"
+                              CommandParameter="{Binding}"
+                              HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                              BorderThickness="0" Background="Transparent" Padding="8,5" Margin="0,1">
+                        <TextBlock Text="{Binding}" FontSize="12" TextTrimming="CharacterEllipsis" />
+                      </Button>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </Flyout>
+            </Button.Flyout>
+            <StackPanel Orientation="Horizontal" Spacing="7">
+              <PathIcon Data="{StaticResource IconSave}" />
+              <TextBlock Text="최근 파일" VerticalAlignment="Center" />
+            </StackPanel>
+          </Button>
+          <Button Click="OnExportCsvClick" Margin="0,3,6,3" IsEnabled="{Binding CanExportCsv}"
+                  ToolTip.Tip="표시 중 채널·구간(커서 활성 시 커서 사이)을 CSV로 내보내기">
+            <StackPanel Orientation="Horizontal" Spacing="7">
+              <PathIcon Data="{StaticResource IconDownload}" />
+              <TextBlock Text="CSV" VerticalAlignment="Center" />
+            </StackPanel>
+          </Button>
+          <Button Command="{Binding ResetViewCommand}" Margin="0,3,6,3" ToolTip.Tip="전체 보기로 리셋">
+            <StackPanel Orientation="Horizontal" Spacing="7">
+              <PathIcon Data="{StaticResource IconRefresh}" />
+              <TextBlock Text="전체 보기" VerticalAlignment="Center" />
+            </StackPanel>
+          </Button>
+          <ToggleButton IsChecked="{Binding LaneMode}" Margin="0,3,6,3"
+                        ToolTip.Tip="오버레이 ↔ 채널별 개별 레인">
+            <StackPanel Orientation="Horizontal" Spacing="7">
+              <PathIcon Data="{StaticResource IconLayers}" />
+              <TextBlock Text="레인 모드" VerticalAlignment="Center" />
+            </StackPanel>
+          </ToggleButton>
+          <ToggleButton IsChecked="{Binding CursorsActive}" Command="{Binding ToggleCursorsCommand}"
+                        Margin="0,3,6,3" ToolTip.Tip="측정 커서 2개 배치/해제 (드래그로 이동)">
+            <StackPanel Orientation="Horizontal" Spacing="7">
+              <PathIcon Data="{StaticResource IconRuler}" />
+              <TextBlock Text="커서" VerticalAlignment="Center" />
+            </StackPanel>
+          </ToggleButton>
+          <ToggleButton IsChecked="{Binding RelativeToTrigger}" Margin="0,3,6,3"
+                        ToolTip.Tip="시간축을 트리거 t=0 기준 상대시간으로 표시">
+            <StackPanel Orientation="Horizontal" Spacing="7">
+              <PathIcon Data="{StaticResource IconBolt}" />
+              <TextBlock Text="t=0 기준" VerticalAlignment="Center" />
+            </StackPanel>
+          </ToggleButton>
+          <ToggleButton IsChecked="{Binding ShowPhasor}" Margin="0,3,6,3"
+                        ToolTip.Tip="선택 구간 1주기 DFT 페이저 다이어그램">
+            <StackPanel Orientation="Horizontal" Spacing="7">
+              <PathIcon Data="{StaticResource IconCompass}" />
+              <TextBlock Text="페이저" VerticalAlignment="Center" />
+            </StackPanel>
+          </ToggleButton>
+        </WrapPanel>
+      </DockPanel>
+    </Border>
+
+    <!-- 하단 상태 라인 + 로고/저작권 -->
+    <Border DockPanel.Dock="Bottom" Padding="12,8,12,2">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+          <TextBlock Text="© 2026 NEXYS Co., Ltd. All rights reserved." Classes="muted" FontSize="11"
+                     VerticalAlignment="Center" />
+          <Image Source="/Assets/nexys-logo.png" Height="14" VerticalAlignment="Center"
+                 RenderOptions.BitmapInterpolationMode="HighQuality" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Spacing="18">
+          <TextBlock Text="{Binding StatusMessage}" Classes="muted" />
+          <TextBlock Text="{Binding ErrorMessage}" Classes="error" />
+        </StackPanel>
+      </DockPanel>
+    </Border>
+
+    <!-- 본문: 채널 트리 + 파형 플롯 + 페이저 -->
+    <Grid ColumnDefinitions="250,12,*,Auto">
+
+      <!-- 채널 트리 카드 -->
+      <Border Grid.Column="0" Classes="card" Padding="12">
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Top" Text="채널" Classes="sectionTitle" Margin="4,0,0,8" />
+
+          <!-- 커서 측정 표 (C-06) -->
+          <Border DockPanel.Dock="Bottom" Classes="softCard" Padding="8" Margin="0,10,0,0"
+                  IsVisible="{Binding CursorsActive}">
+            <StackPanel Spacing="4">
+              <TextBlock Text="커서 측정" Classes="fieldLabel" Margin="0" />
+              <TextBlock Text="{Binding CursorSummary}" FontSize="11.5" FontWeight="Medium"
+                         TextWrapping="Wrap" />
+              <ItemsControl ItemsSource="{Binding CursorReadouts}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:CursorReadoutRow">
+                    <Grid ColumnDefinitions="10,*,Auto" Margin="0,1">
+                      <Border Grid.Column="0" Width="7" Height="7" CornerRadius="4"
+                              Background="{Binding Brush}" VerticalAlignment="Center" />
+                      <TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="11" Margin="5,0,0,0"
+                                 VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                      <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6">
+                        <TextBlock Text="{Binding V1}" FontSize="11" Classes="muted" />
+                        <TextBlock Text="{Binding V2}" FontSize="11" Classes="muted" />
+                        <TextBlock Text="{Binding Delta}" FontSize="11" FontWeight="Medium" />
+                      </StackPanel>
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+              <TextBlock Text="값: C1 · C2 · Δ" Classes="fieldLabel" Margin="0" />
+            </StackPanel>
+          </Border>
+          <ScrollViewer>
+            <StackPanel Spacing="4">
+              <Expander Header="아날로그" IsExpanded="True">
+                <ItemsControl ItemsSource="{Binding AnalogChannels}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ChannelViewModel">
+                      <StackPanel Orientation="Horizontal" Spacing="7" Margin="2,1">
+                        <CheckBox IsChecked="{Binding IsVisible}" Padding="4,0" MinWidth="0" />
+                        <Border Width="10" Height="10" CornerRadius="5" Background="{Binding Brush}"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding DisplayName}" FontSize="12.5" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </Expander>
+              <Expander Header="디지털" IsExpanded="True">
+                <ItemsControl ItemsSource="{Binding DigitalChannels}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ChannelViewModel">
+                      <StackPanel Orientation="Horizontal" Spacing="7" Margin="2,1">
+                        <CheckBox IsChecked="{Binding IsVisible}" Padding="4,0" MinWidth="0" />
+                        <Border Width="10" Height="10" CornerRadius="5" Background="{Binding Brush}"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding Name}" FontSize="12.5" VerticalAlignment="Center" />
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </Expander>
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </Border>
+
+      <!-- 파형 플롯 카드 -->
+      <Border Grid.Column="2" Classes="card" Padding="10">
+        <DockPanel>
+          <controls:MinimapControl x:Name="Minimap" DockPanel.Dock="Bottom" Height="44" Margin="2,8,2,0"
+                                   IsVisible="{Binding Record, Converter={x:Static ObjectConverters.IsNotNull}}" />
+          <Panel>
+            <controls:WaveformPlotControl x:Name="Plot" />
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="12"
+                        IsVisible="{Binding Record, Converter={x:Static ObjectConverters.IsNull}}">
+              <PathIcon Data="{StaticResource IconChart}" Width="42" Height="42"
+                        Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" />
+              <TextBlock Text="COMTRADE 파일(CFG)을 열거나 창으로 드래그하면 파형이 표시됩니다."
+                         Classes="muted" HorizontalAlignment="Center" />
+            </StackPanel>
+          </Panel>
+        </DockPanel>
+      </Border>
+
+      <!-- 페이저 카드 (C-12) -->
+      <Border Grid.Column="3" Classes="card" Padding="12" Margin="12,0,0,0" Width="272"
+              IsVisible="{Binding ShowPhasor}">
+        <DockPanel>
+          <TextBlock DockPanel.Dock="Top" Text="페이저" Classes="sectionTitle" Margin="4,0,0,4" />
+          <TextBlock DockPanel.Dock="Top" Text="{Binding PhasorWindowInfo}" Classes="muted"
+                     Margin="4,0,0,6" TextWrapping="Wrap" />
+          <ToggleButton DockPanel.Dock="Top" IsChecked="{Binding RelativeAngles}" FontSize="12"
+                        Padding="12,5" Margin="4,0,0,6" HorizontalAlignment="Left"
+                        ToolTip.Tip="첫 가시 채널 기준 상대각">
+            <TextBlock Text="상대각" />
+          </ToggleButton>
+          <ScrollViewer DockPanel.Dock="Bottom" MaxHeight="220" Margin="4,8,0,0">
+            <ItemsControl ItemsSource="{Binding PhasorRows}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:PhasorRow">
+                  <Grid ColumnDefinitions="12,*,Auto" Margin="0,2">
+                    <Border Grid.Column="0" Width="8" Height="8" CornerRadius="4"
+                            Background="{Binding Brush}" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="12" Margin="6,0,0,0"
+                               VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                      <TextBlock Text="{Binding MagnitudeText}" FontSize="12" FontWeight="Medium" />
+                      <TextBlock Text="{Binding AngleText}" FontSize="12" Classes="muted" />
+                    </StackPanel>
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
+          <controls:PhasorControl x:Name="Phasor" MinHeight="200" />
+        </DockPanel>
+      </Border>
+    </Grid>
+  </DockPanel>
+</Window>

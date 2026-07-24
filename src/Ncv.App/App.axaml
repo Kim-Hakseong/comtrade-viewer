@@ -1,0 +1,247 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Ncv.App.App"
+             RequestedThemeVariant="Light">
+
+  <Application.Resources>
+    <!-- 팔레트: NEXYS 와인 레드(#7A1020) 포인트 컬러 (Modbus Workbench 계승) -->
+    <Color x:Key="SystemAccentColor">#7A1020</Color>
+    <Color x:Key="SystemAccentColorDark1">#6A0E1C</Color>
+    <Color x:Key="SystemAccentColorDark2">#5A0B18</Color>
+    <Color x:Key="SystemAccentColorDark3">#4A0913</Color>
+    <Color x:Key="SystemAccentColorLight1">#9C2030</Color>
+    <Color x:Key="SystemAccentColorLight2">#B04B57</Color>
+    <Color x:Key="SystemAccentColorLight3">#C97F86</Color>
+
+    <!-- 배경/서피스: 넥시스 뉴트럴 톤, 와인 레드는 포인트 전용 -->
+    <LinearGradientBrush x:Key="AppBackgroundBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+      <GradientStop Color="#F4F3F0" Offset="0" />
+      <GradientStop Color="#ECEAE5" Offset="0.5" />
+      <GradientStop Color="#DDDBD3" Offset="1" />
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="CardBrush" Color="#FCFBF9" />
+    <SolidColorBrush x:Key="CardSoftBrush" Color="#F1EFEA" />
+    <SolidColorBrush x:Key="InkBrush" Color="#16171A" />
+    <SolidColorBrush x:Key="InkHoverBrush" Color="#2C2E33" />
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#16171A" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#8B897F" />
+    <SolidColorBrush x:Key="AccentBrush" Color="#7A1020" />
+    <SolidColorBrush x:Key="AccentSoftBrush" Color="#F0EAE7" />
+    <SolidColorBrush x:Key="LineBrush" Color="#DDDBD3" />
+    <SolidColorBrush x:Key="ErrorBrush" Color="#9C2030" />
+
+    <!-- Fluent 리소스 오버라이드 -->
+    <SolidColorBrush x:Key="TabItemHeaderSelectedPipeFill" Color="Transparent" />
+    <SolidColorBrush x:Key="TabItemHeaderForegroundSelected" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="TabItemHeaderForegroundSelectedPointerOver" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="TabItemHeaderForegroundSelectedPressed" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7A1020" />
+    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#9C2030" />
+    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#5A0B18" />
+    <SolidColorBrush x:Key="ToggleButtonForegroundChecked" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ToggleButtonForegroundCheckedPointerOver" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ToggleButtonForegroundCheckedPressed" Color="#FFFFFF" />
+
+    <!-- 메뉴 픽토그램 (24x24 벡터, Modbus Workbench 계승 + 뷰어 전용 추가) -->
+    <StreamGeometry x:Key="IconFolder">M10 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V8C22 6.9 21.1 6 20 6H12L10 4Z</StreamGeometry>
+    <StreamGeometry x:Key="IconSave">M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3ZM12 19C10.34 19 9 17.66 9 16C9 14.34 10.34 13 12 13C13.66 13 15 14.34 15 16C15 17.66 13.66 19 12 19ZM15 9H5V5H15V9Z</StreamGeometry>
+    <StreamGeometry x:Key="IconDownload">M19 9H15V3H9V9H5L12 16L19 9ZM5 18V20H19V18H5Z</StreamGeometry>
+    <StreamGeometry x:Key="IconHelp">M11 18H13V16H11V18ZM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 6C9.79 6 8 7.79 8 10H10C10 8.9 10.9 8 12 8C13.1 8 14 8.9 14 10C14 12 11 11.75 11 15H13C13 12.75 16 12.5 16 10C16 7.79 14.21 6 12 6Z</StreamGeometry>
+    <StreamGeometry x:Key="IconWarning">M1 21H23L12 2 1 21ZM13 18H11V16H13V18ZM13 14H11V10H13V14Z</StreamGeometry>
+    <StreamGeometry x:Key="IconClose">M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12Z</StreamGeometry>
+    <StreamGeometry x:Key="IconRefresh">M12 6V9L16 5 12 1V4C7.58 4 4 7.58 4 12C4 13.57 4.46 15.03 5.24 16.26L6.7 14.8C6.25 13.97 6 13.02 6 12C6 8.69 8.69 6 12 6ZM18.76 7.74L17.3 9.2C17.74 10.04 18 10.98 18 12C18 15.31 15.31 18 12 18V15L8 19 12 23V20C16.42 20 20 16.42 20 12C20 10.43 19.54 8.97 18.76 7.74Z</StreamGeometry>
+    <StreamGeometry x:Key="IconChart">M3.5 18.49L9.5 12.48L13.5 16.48L22 6.92L20.59 5.51L13.5 13.48L9.5 9.48L2 16.99L3.5 18.49Z</StreamGeometry>
+    <StreamGeometry x:Key="IconBolt">M7 2V13H10V22L17 10H13L17 2H7Z</StreamGeometry>
+    <StreamGeometry x:Key="IconRuler">M21 6H3C1.9 6 1 6.9 1 8V16C1 17.1 1.9 18 3 18H21C22.1 18 23 17.1 23 16V8C23 6.9 22.1 6 21 6ZM21 16H3V8H5V12H7V8H9V12H11V8H13V12H15V8H17V12H19V8H21V16Z</StreamGeometry>
+    <StreamGeometry x:Key="IconCompass">M12 10.9C11.39 10.9 10.9 11.39 10.9 12C10.9 12.61 11.39 13.1 12 13.1C12.61 13.1 13.1 12.61 13.1 12C13.1 11.39 12.61 10.9 12 10.9ZM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM14.19 14.19L6 18L9.81 9.81L18 6L14.19 14.19Z</StreamGeometry>
+    <StreamGeometry x:Key="IconZoomIn">M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5C5 7.01 7.01 5 9.5 5C11.99 5 14 7.01 14 9.5C14 11.99 11.99 14 9.5 14ZM12 10H10V12H9V10H7V9H9V7H10V9H12V10Z</StreamGeometry>
+    <StreamGeometry x:Key="IconLayers">M11.99 18.54L4.62 12.81L3 14.07L12 21.07L21 14.07L19.37 12.8L11.99 18.54ZM12 16L19.36 10.27L21 9L12 2L3 9L4.63 10.27L12 16Z</StreamGeometry>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+
+    <!-- 공통: 그라데이션 배경 + Inter 폰트 -->
+    <Style Selector="Window">
+      <Setter Property="Background" Value="{StaticResource AppBackgroundBrush}" />
+      <Setter Property="FontFamily" Value="fonts:Inter#Inter" />
+      <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+    </Style>
+
+    <!-- 라운드 카드 -->
+    <Style Selector="Border.card">
+      <Setter Property="Background" Value="{StaticResource CardBrush}" />
+      <Setter Property="CornerRadius" Value="18" />
+      <Setter Property="BoxShadow" Value="0 6 22 0 #14000000" />
+    </Style>
+    <Style Selector="Border.softCard">
+      <Setter Property="Background" Value="{StaticResource CardSoftBrush}" />
+      <Setter Property="CornerRadius" Value="14" />
+    </Style>
+    <Style Selector="Border.pill">
+      <Setter Property="CornerRadius" Value="17" />
+      <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+      <Setter Property="BorderThickness" Value="1.2" />
+      <Setter Property="Padding" Value="14,7" />
+    </Style>
+    <Style Selector="Border.inkChip">
+      <Setter Property="Background" Value="{StaticResource InkBrush}" />
+      <Setter Property="CornerRadius" Value="14" />
+      <Setter Property="Padding" Value="12,5" />
+    </Style>
+
+    <!-- 라벨 -->
+    <Style Selector="TextBlock.fieldLabel">
+      <Setter Property="FontSize" Value="11" />
+      <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+      <Setter Property="Margin" Value="4,0,0,4" />
+    </Style>
+    <Style Selector="TextBlock.sectionTitle">
+      <Setter Property="FontSize" Value="15" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="TextBlock.muted">
+      <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+      <Setter Property="FontSize" Value="12" />
+    </Style>
+    <Style Selector="TextBlock.error">
+      <Setter Property="Foreground" Value="{StaticResource ErrorBrush}" />
+      <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <!-- 필 버튼 -->
+    <Style Selector="Button">
+      <Setter Property="Background" Value="{StaticResource CardBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="16" />
+      <Setter Property="Padding" Value="14,7" />
+      <Setter Property="FontSize" Value="13" />
+    </Style>
+    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{StaticResource AccentSoftBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+    </Style>
+    <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+      <Setter Property="Foreground" Value="#FFFFFF" />
+    </Style>
+
+    <!-- 다크(잉크) 강조 버튼 -->
+    <Style Selector="Button.accent">
+      <Setter Property="Background" Value="{StaticResource InkBrush}" />
+      <Setter Property="Foreground" Value="#FFFFFF" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+    <Style Selector="Button.accent /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{StaticResource InkBrush}" />
+      <Setter Property="Foreground" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+    </Style>
+    <Style Selector="Button.accent:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{StaticResource InkHoverBrush}" />
+      <Setter Property="Foreground" Value="#FFFFFF" />
+    </Style>
+    <Style Selector="Button.accent:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+      <Setter Property="Foreground" Value="#FFFFFF" />
+    </Style>
+
+    <!-- 토글 버튼 -->
+    <Style Selector="ToggleButton">
+      <Setter Property="Background" Value="{StaticResource CardBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="16" />
+      <Setter Property="Padding" Value="14,7" />
+      <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <!-- 입력 컨트롤 -->
+    <Style Selector="TextBox">
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+      <Setter Property="FontSize" Value="13" />
+      <Setter Property="MinHeight" Value="32" />
+      <Setter Property="Padding" Value="10,6" />
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Background" Value="#FFFFFF" />
+      <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+      <Setter Property="FontSize" Value="13" />
+      <Setter Property="MinHeight" Value="32" />
+      <Setter Property="Padding" Value="10,5" />
+    </Style>
+
+    <!-- 탭: 선택 시 다크 필 -->
+    <Style Selector="TabControl">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Padding" Value="0,10,0,0" />
+    </Style>
+    <Style Selector="TabItem">
+      <Setter Property="FontSize" Value="13" />
+      <Setter Property="FontWeight" Value="Medium" />
+      <Setter Property="MinHeight" Value="34" />
+      <Setter Property="Padding" Value="16,6" />
+      <Setter Property="Margin" Value="0,0,6,0" />
+      <Setter Property="CornerRadius" Value="17" />
+      <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="TabItem:selected">
+      <Setter Property="Background" Value="{StaticResource InkBrush}" />
+      <Setter Property="Foreground" Value="#FFFFFF" />
+    </Style>
+    <Style Selector="TabItem:selected /template/ Border#PART_LayoutRoot">
+      <Setter Property="Background" Value="{StaticResource InkBrush}" />
+      <Setter Property="CornerRadius" Value="17" />
+    </Style>
+    <Style Selector="TabItem:pointerover /template/ Border#PART_LayoutRoot">
+      <Setter Property="Background" Value="{StaticResource AccentSoftBrush}" />
+      <Setter Property="CornerRadius" Value="17" />
+    </Style>
+
+    <!-- 트리/리스트/익스팬더 -->
+    <Style Selector="TreeView">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="ListBox">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="CornerRadius" Value="12" />
+    </Style>
+    <Style Selector="Expander">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="CheckBox">
+      <Setter Property="FontSize" Value="13" />
+    </Style>
+    <Style Selector="RadioButton">
+      <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <!-- 버튼 내 픽토그램 -->
+    <Style Selector="Button PathIcon">
+      <Setter Property="Width" Value="15" />
+      <Setter Property="Height" Value="15" />
+      <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+    </Style>
+    <Style Selector="Button.accent PathIcon">
+      <Setter Property="Foreground" Value="#FFFFFF" />
+    </Style>
+    <Style Selector="ToggleButton PathIcon">
+      <Setter Property="Width" Value="15" />
+      <Setter Property="Height" Value="15" />
+      <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+    </Style>
+    <Style Selector="ToggleButton:checked PathIcon">
+      <Setter Property="Foreground" Value="#FFFFFF" />
+    </Style>
+  </Application.Styles>
+</Application>
