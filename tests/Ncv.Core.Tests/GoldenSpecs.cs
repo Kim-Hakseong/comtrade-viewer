@@ -20,7 +20,7 @@ public static class GoldenSpecs
 
     public static SyntheticSpec FaultScenario(string dataType = "ASCII", int revYear = 1999) => new()
     {
-        Station = "NEXYS_SYN",
+        Station = "SYN_STATION",
         DevId = "SYN01",
         RevYear = revYear,
         SampleRate = 1920,

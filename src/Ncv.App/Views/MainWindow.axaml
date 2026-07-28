@@ -5,8 +5,7 @@
         x:Class="Ncv.App.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         x:CompileBindings="False"
-        Title="Nexys COMTRADE Viewer"
-        Icon="/Assets/app.ico"
+        Title="COMTRADE Viewer"
         Width="1280" Height="760"
         MinWidth="980" MinHeight="600"
         DragDrop.AllowDrop="True">
@@ -19,7 +18,7 @@
           <StackPanel Orientation="Horizontal" Spacing="7">
             <PathIcon Data="{StaticResource IconChart}" Width="15" Height="15"
                       Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center" />
-            <TextBlock Text="Nexys COMTRADE Viewer" FontWeight="SemiBold" FontSize="14" VerticalAlignment="Center" />
+            <TextBlock Text="COMTRADE Viewer" FontWeight="SemiBold" FontSize="14" VerticalAlignment="Center" />
           </StackPanel>
         </Border>
         <ProgressBar DockPanel.Dock="Right" Width="120" Height="6" Margin="12,0,6,0" VerticalAlignment="Center"
@@ -99,20 +98,12 @@
       </DockPanel>
     </Border>
 
-    <!-- 하단 상태 라인 + 로고/저작권 -->
+    <!-- 하단 상태 라인 -->
     <Border DockPanel.Dock="Bottom" Padding="12,8,12,2">
-      <DockPanel>
-        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-          <TextBlock Text="© 2026 NEXYS Co., Ltd. All rights reserved." Classes="muted" FontSize="11"
-                     VerticalAlignment="Center" />
-          <Image Source="/Assets/nexys-logo.png" Height="14" VerticalAlignment="Center"
-                 RenderOptions.BitmapInterpolationMode="HighQuality" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Spacing="18">
-          <TextBlock Text="{Binding StatusMessage}" Classes="muted" />
-          <TextBlock Text="{Binding ErrorMessage}" Classes="error" />
-        </StackPanel>
-      </DockPanel>
+      <StackPanel Orientation="Horizontal" Spacing="18">
+        <TextBlock Text="{Binding StatusMessage}" Classes="muted" />
+        <TextBlock Text="{Binding ErrorMessage}" Classes="error" />
+      </StackPanel>
     </Border>
 
     <!-- 본문: 채널 트리 + 파형 플롯 + 페이저 -->

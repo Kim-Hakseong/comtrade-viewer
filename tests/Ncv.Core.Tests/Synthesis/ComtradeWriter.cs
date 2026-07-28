@@ -24,7 +24,7 @@ public sealed class SyntheticDigital
 
 public sealed class SyntheticSpec
 {
-    public string Station { get; init; } = "NEXYS_SYN";
+    public string Station { get; init; } = "SYN_STATION";
     public string DevId { get; init; } = "SYN01";
     public int RevYear { get; init; } = 1999;
     public double LineFrequency { get; init; } = 60;

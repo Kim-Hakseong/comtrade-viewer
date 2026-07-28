@@ -9,7 +9,7 @@ public class CfgParserTests
 {
     /// <summary>DESIGN §7.1 골든 CFG (리터럴, 수정 금지).</summary>
     public const string GoldenCfg =
-        "NEXYS_STATION,DEV01,1999\n" +
+        "TEST_STATION,DEV01,1999\n" +
         "4,2A,2D\n" +
         "1,VA,A,,V,0.048828,0.0,0,-32767,32767,13800,115,S\n" +
         "2,IA,A,,A,0.010000,0.0,0,-32767,32767,1200,5,S\n" +
@@ -36,7 +36,7 @@ public class CfgParserTests
 
         Assert.True(result.Success, result.Error);
         var doc = result.Value!;
-        Assert.Equal("NEXYS_STATION", doc.StationName);
+        Assert.Equal("TEST_STATION", doc.StationName);
         Assert.Equal("DEV01", doc.RecDevId);
         Assert.Equal(1999, doc.RevYear);
         Assert.Equal(2, doc.AnalogCount);
@@ -117,7 +117,7 @@ public class CfgParserTests
     [Fact]
     public void MissingRevYear_FailsAtLine1()
     {
-        string bad = GoldenCfg.Replace("NEXYS_STATION,DEV01,1999", "NEXYS_STATION,DEV01");
+        string bad = GoldenCfg.Replace("TEST_STATION,DEV01,1999", "TEST_STATION,DEV01");
         var result = ParseText(bad);
 
         Assert.False(result.Success);

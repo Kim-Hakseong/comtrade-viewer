@@ -10,7 +10,7 @@ public sealed class AppSettings
 }
 
 /// <summary>
-/// 설정 JSON 저장/로드 (C-14). 위치: %AppData%/NexysComtradeViewer/settings.json.
+/// 설정 JSON 저장/로드 (C-14). 위치: %AppData%/ComtradeViewer/settings.json.
 /// 손상·부재 시 기본값으로 조용히 복구 (앱 동작을 막지 않는다).
 /// </summary>
 public static class SettingsStore
@@ -21,7 +21,7 @@ public static class SettingsStore
 
     public static string SettingsPath { get; } = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        "NexysComtradeViewer", "settings.json");
+        "ComtradeViewer", "settings.json");
 
     public static AppSettings Load()
     {
